@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ name }} - CV</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Optional: Custom CSS for fine-tuning */
+        .header-bg {
+            background-color: #F3F4F6;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans">
+
+    <!-- Header Section -->
+    <header class="header-bg py-10 text-center">
+        <div class="max-w-screen-lg mx-auto px-6">
+            <h1 class="text-5xl font-extrabold text-gray-800">{{ name }}</h1>
+            <p class="text-lg text-gray-500 mt-2">{{ profession }}</p>
+            <div class="text-sm mt-2">
+                <p class="text-blue-600"><a href="{{ linkedin }}" class="hover:underline">{{ linkedin }}</a></p>
+            </div>
+            <div class="mt-4 text-gray-600">
+                <p>Total CV Views: <span class="font-semibold text-gray-800">{{ total_views }}</span></p>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-screen-lg mx-auto px-6 py-8">
+
+        <!-- Experience Section -->
+        <section class="mb-12">
+            <h2 class="text-3xl font-semibold text-gray-800 mb-4 border-b-2 border-blue-500 inline-block">ERFAHRUNG</h2>
+            {% for experience in experiences %}
+                <div class="mt-6">
+                    <h3 class="text-2xl font-semibold text-gray-700">{{ experience.title }} — {{ experience.company }}</h3>
+                    <p class="text-gray-600">{{ experience.duration }}</p>
+                    <ul class="list-disc pl-5 mt-2 text-gray-700">
+                        {% for detail in experience.details %}
+                            <li>{{ detail }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endfor %}
+        </section>
+
+    
+       <!-- Skills Section -->
+        <section class="mb-12">
+            <h2 class="text-3xl font-semibold text-gray-800 mb-4 border-b-2 border-blue-500 inline-block">FÄHIGKEITEN</h2>
+            <ul class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 mt-6 text-gray-700">
+                {% for skill in skills %}
+                    <li class="bg-gray-100 rounded-md p-2 text-center text-sm shadow-sm">{{ skill }}</li>
+                {% endfor %}
+            </ul>
+        </section>
+
+        <!-- Projects Section -->
+        <section class="mb-12">
+            <h2 class="text-3xl font-semibold text-gray-800 mb-4 border-b-2 border-blue-500 inline-block">PROJEKTE</h2>
+            {% for project in projects %}
+                <div class="mt-6">
+                    <h3 class="text-2xl font-semibold text-gray-700">{{ project.title }}</h3>
+                    <ul class="list-disc pl-5 mt-2 text-gray-700">
+                        {% for detail in project.details %}
+                            <li>{{ detail }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endfor %}
+        </section>
+
+        <!-- Education Section -->
+        <section>
+            <h2 class="text-3xl font-semibold text-gray-800 mb-4 border-b-2 border-blue-500 inline-block">Studium</h2>
+            {% for education in Studium %}
+                <div class="mt-6">
+                    <h3 class="text-2xl font-semibold text-gray-700">{{ education.degree }} — {{ education.institution }}</h3>
+                    <p class="text-gray-600">{{ education.duration }}</p>
+                    <p class="text-gray-700">{{ education.details }}</p>
+                </div>
+            {% endfor %}
+        </section>
+
+    </main>
+
+    <!-- Footer Section -->
+    <footer class="bg-gray-100 text-center py-4 mt-12">
+        <p class="text-sm text-gray-500">Generated with love and Tailwind CSS</p>
+    </footer>
+
+</body>
+</html>

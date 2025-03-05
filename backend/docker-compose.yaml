@@ -1,0 +1,101 @@
+version: '3.8'
+
+services:
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.3.2
+    container_name: zookeeper
+    ports:
+      - "2181:2181"
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    networks:
+      - kafka-net
+
+  kafka:
+    image: confluentinc/cp-kafka:7.3.2
+    container_name: kafka
+    depends_on:
+      - zookeeper
+    ports:
+      - "9092:9092"
+      - "29092:29092"
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092,PLAINTEXT_HOST://localhost:29092
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "false"
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+    healthcheck:
+      test: ["CMD", "kafka-broker-api-versions", "--bootstrap-server", "kafka:9092"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    networks:
+      - kafka-net
+
+  kafka-topics:
+    image: confluentinc/cp-kafka:7.3.2
+    depends_on:
+      kafka:
+        condition: service_healthy
+    command: "kafka-topics --create --if-not-exists --bootstrap-server kafka:9092 --topic resume-views --partitions 1 --replication-factor 1"
+    networks:
+      - kafka-net
+
+  flask-app:
+ #   image: alollosh/mycv:latest
+    container_name: flask-app
+    build: .
+    ports:
+      - "5000:5000"
+      - "8000:8000"
+    volumes:
+      - ./cv_data:/WORKDIR/data
+    environment:
+      KAFKA_BROKER: "kafka:9092"
+    depends_on:
+      - kafka-topics
+    networks:
+      - kafka-net
+  prometheus:
+    image: prom/prometheus
+    container_name: prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus_data:/prometheus
+    networks:
+      - kafka-net
+
+  cadvisor:
+    image: gcr.io/cadvisor/cadvisor:latest
+    container_name: cadvisor
+    ports:
+    - 8080:8080
+    volumes:
+    - /:/rootfs:ro
+    - /var/run:/var/run:rw
+    - /sys:/sys:ro
+    - /var/lib/docker/:/var/lib/docker:ro
+    networks:
+      - kafka-net
+  jenkins:
+    image: jenkins/jenkins:lts
+    container_name: jenkins
+    ports:
+      - 8082:8080
+      - 50000:50000
+    volumes:
+      - ./jenkins:/var/jenkins_home
+    networks:
+      - kafka-net
+
+networks:
+  kafka-net:
+    driver: bridge
+volumes:
+    prometheus_data:
+
