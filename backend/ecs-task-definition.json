@@ -1,0 +1,258 @@
+{
+  "containerDefinitions": [
+    {
+      "essential": true,
+      "image": "gcr.io/cadvisor/cadvisor:latest",
+      "memory": 512,
+      "memoryReservation": 256,
+      "mountPoints": [
+        {
+          "containerPath": "/rootfs",
+          "sourceVolume": ""
+        },
+        {
+          "containerPath": "/var/run",
+          "sourceVolume": "VarRun"
+        },
+        {
+          "containerPath": "/sys",
+          "sourceVolume": "Sys"
+        },
+        {
+          "containerPath": "/var/lib/docker",
+          "sourceVolume": "VarLibDocker"
+        }
+      ],
+      "name": "cadvisor",
+      "portMappings": [
+        {
+          "containerPort": 8080,
+          "hostPort": 8080
+        }
+      ]
+    },
+    {
+      "environment": [
+        {
+          "name": "KAFKA_BROKER",
+          "value": "kafka:9092"
+        }
+      ],
+      "essential": true,
+      "image": "alollosh/mycv:v4",
+      "memory": 512,
+      "memoryReservation": 256,
+      "mountPoints": [
+        {
+          "containerPath": "/WORKDIR/data",
+          "sourceVolume": "_Cv_Data"
+        }
+      ],
+      "name": "flask-app",
+      "portMappings": [
+        {
+          "containerPort": 5000,
+          "hostPort": 5000
+        },
+        {
+          "containerPort": 8000,
+          "hostPort": 8000
+        }
+      ]
+    },
+    {
+      "essential": true,
+      "image": "jenkins/jenkins:lts",
+      "memory": 1024,
+      "memoryReservation": 512,
+      "mountPoints": [
+        {
+          "containerPath": "/var/run/docker.sock",
+          "sourceVolume": "VarRunDocker_Sock"
+        },
+        {
+          "containerPath": "/var/jenkins_home",
+          "sourceVolume": "_Jenkins"
+        }
+      ],
+      "name": "jenkins",
+      "portMappings": [
+        {
+          "containerPort": 8080,
+          "hostPort": 8082
+        },
+        {
+          "containerPort": 50000,
+          "hostPort": 50000
+        }
+      ],
+      "privileged": true
+    },
+    {
+      "environment": [
+        {
+          "name": "KAFKA_BROKER_ID",
+          "value": "1"
+        },
+        {
+          "name": "KAFKA_ZOOKEEPER_CONNECT",
+          "value": "zookeeper:2181"
+        },
+        {
+          "name": "KAFKA_LISTENER_SECURITY_PROTOCOL_MAP",
+          "value": "PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT"
+        },
+        {
+          "name": "KAFKA_ADVERTISED_LISTENERS",
+          "value": "PLAINTEXT://kafka:9092,PLAINTEXT_HOST://localhost:29092"
+        },
+        {
+          "name": "KAFKA_AUTO_CREATE_TOPICS_ENABLE",
+          "value": "false"
+        },
+        {
+          "name": "KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR",
+          "value": "1"
+        }
+      ],
+      "essential": true,
+      "image": "confluentinc/cp-kafka:7.3.2",
+      "memory": 1024,
+      "memoryReservation": 512,
+      "name": "kafka",
+      "portMappings": [
+        {
+          "containerPort": 9092,
+          "hostPort": 9092
+        },
+        {
+          "containerPort": 29092,
+          "hostPort": 29092
+        }
+      ]
+    },
+    {
+      "command": [
+        "kafka-topics",
+        "--create",
+        "--if-not-exists",
+        "--bootstrap-server",
+        "kafka:9092",
+        "--topic",
+        "resume-views",
+        "--partitions",
+        "1",
+        "--replication-factor",
+        "1"
+      ],
+      "essential": true,
+      "image": "confluentinc/cp-kafka:7.3.2",
+      "memory": 512,
+      "memoryReservation": 256,
+      "name": "kafka-topics"
+    },
+    {
+      "essential": true,
+      "image": "prom/prometheus",
+      "memory": 1024,
+      "memoryReservation": 512,
+      "mountPoints": [
+        {
+          "containerPath": "/etc/prometheus/prometheus.yml",
+          "sourceVolume": "_PrometheusPrometheus_Yml"
+        },
+        {
+          "containerPath": "/prometheus",
+          "sourceVolume": "Prometheus_Data"
+        }
+      ],
+      "name": "prometheus",
+      "portMappings": [
+        {
+          "containerPort": 9090,
+          "hostPort": 9090
+        }
+      ]
+    },
+    {
+      "environment": [
+        {
+          "name": "ZOOKEEPER_CLIENT_PORT",
+          "value": "2181"
+        },
+        {
+          "name": "ZOOKEEPER_TICK_TIME",
+          "value": "2000"
+        }
+      ],
+      "essential": true,
+      "image": "confluentinc/cp-zookeeper:7.3.2",
+      "memory": 512,
+      "memoryReservation": 256,
+      "name": "zookeeper",
+      "portMappings": [
+        {
+          "containerPort": 2181,
+          "hostPort": 2181
+        }
+      ]
+    }
+  ],
+  "family": "",
+  "volumes": [
+    {
+      "host": {
+        "sourcePath": "./cv_data"
+      },
+      "name": "_Cv_Data"
+    },
+    {
+      "host": {
+        "sourcePath": "./prometheus/prometheus.yml"
+      },
+      "name": "_PrometheusPrometheus_Yml"
+    },
+    {
+      "host": {
+        "sourcePath": "prometheus_data"
+      },
+      "name": "Prometheus_Data"
+    },
+    {
+      "host": {
+        "sourcePath": "/"
+      },
+      "name": ""
+    },
+    {
+      "host": {
+        "sourcePath": "/var/run"
+      },
+      "name": "VarRun"
+    },
+    {
+      "host": {
+        "sourcePath": "/sys"
+      },
+      "name": "Sys"
+    },
+    {
+      "host": {
+        "sourcePath": "/var/lib/docker/"
+      },
+      "name": "VarLibDocker"
+    },
+    {
+      "host": {
+        "sourcePath": "/var/run/docker.sock"
+      },
+      "name": "VarRunDocker_Sock"
+    },
+    {
+      "host": {
+        "sourcePath": "./jenkins"
+      },
+      "name": "_Jenkins"
+    }
+  ]
+}

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=0.8">
     <title>{{ name }} - CV</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
@@ -19,8 +19,19 @@
         <div class="max-w-screen-lg mx-auto px-6">
             <h1 class="text-5xl font-extrabold text-gray-800">{{ name }}</h1>
             <p class="text-lg text-gray-500 mt-2">{{ profession }}</p>
-            <div class="text-sm mt-2">
-                <p class="text-blue-600"><a href="{{ linkedin }}" class="hover:underline">{{ linkedin }}</a></p>
+            <div class="text-sm mt-2 space-x-4">
+                <!-- LinkedIn -->
+                <p class="text-blue-600 inline-block">
+                    <a href="{{ linkedin }}" class="hover:underline">LinkedIn</a>
+                </p>
+                <!-- Email -->
+                <p class="text-blue-600 inline-block">
+                    <a href="mailto:{{ email }}" class="hover:underline">Email</a>
+                </p>
+                <!-- GitHub -->
+                <p class="text-blue-600 inline-block">
+                    <a href="{{ github }}" class="hover:underline">GitHub</a>
+                </p>
             </div>
             <div class="mt-4 text-gray-600">
                 <p>Total CV Views: <span class="font-semibold text-gray-800">{{ total_views }}</span></p>
@@ -33,7 +44,7 @@
 
         <!-- Experience Section -->
         <section class="mb-12">
-            <h2 class="text-3xl font-semibold text-gray-800 mb-4 border-b-2 border-blue-500 inline-block">ERFAHRUNG</h2>
+            <h2 class="text-3xl font-semibold text-gray-800 mb-4 border-b-2 border-blue-500 inline-block">EXPERIENCE</h2>
             {% for experience in experiences %}
                 <div class="mt-6">
                     <h3 class="text-2xl font-semibold text-gray-700">{{ experience.title }} — {{ experience.company }}</h3>
@@ -47,11 +58,10 @@
             {% endfor %}
         </section>
 
-    
-       <!-- Skills Section -->
+        <!-- Skills Section -->
         <section class="mb-12">
-            <h2 class="text-3xl font-semibold text-gray-800 mb-4 border-b-2 border-blue-500 inline-block">FÄHIGKEITEN</h2>
-            <ul class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 mt-6 text-gray-700">
+            <h2 class="text-3xl font-semibold text-gray-800 mb-4 border-b-2 border-blue-500 inline-block">SKILLS</h2>
+            <ul class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-10 gap-3 mt-6 text-gray-700">
                 {% for skill in skills %}
                     <li class="bg-gray-100 rounded-md p-2 text-center text-sm shadow-sm">{{ skill }}</li>
                 {% endfor %}
@@ -60,7 +70,7 @@
 
         <!-- Projects Section -->
         <section class="mb-12">
-            <h2 class="text-3xl font-semibold text-gray-800 mb-4 border-b-2 border-blue-500 inline-block">PROJEKTE</h2>
+            <h2 class="text-3xl font-semibold text-gray-800 mb-4 border-b-2 border-blue-500 inline-block">PROJECTS</h2>
             {% for project in projects %}
                 <div class="mt-6">
                     <h3 class="text-2xl font-semibold text-gray-700">{{ project.title }}</h3>
@@ -73,10 +83,24 @@
             {% endfor %}
         </section>
 
+        <!-- Certifications Section -->
+        <section class="mb-12">
+            <h2 class="text-3xl font-semibold text-gray-800 mb-4 border-b-2 border-blue-500 inline-block">CERTIFICATES</h2>
+            <ul class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6 text-gray-700"> <!-- 2 columns -->
+                {% for cert in certificates %}
+                    <li>
+                        <a href="{{ cert.link }}" target="_blank" class="text-blue-600 hover:underline">{{ cert.name }}</a>
+                        <span class="mr-2">📜</span> <!-- Optional: Add an icon -->
+
+                    </li>
+                {% endfor %}
+            </ul>
+        </section>
+
         <!-- Education Section -->
         <section>
-            <h2 class="text-3xl font-semibold text-gray-800 mb-4 border-b-2 border-blue-500 inline-block">Studium</h2>
-            {% for education in Studium %}
+            <h2 class="text-3xl font-semibold text-gray-800 mb-4 border-b-2 border-blue-500 inline-block">EDUCATION</h2>
+            {% for education in education %}
                 <div class="mt-6">
                     <h3 class="text-2xl font-semibold text-gray-700">{{ education.degree }} — {{ education.institution }}</h3>
                     <p class="text-gray-600">{{ education.duration }}</p>

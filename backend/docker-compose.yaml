@@ -23,9 +23,8 @@ services:
     environment:
       KAFKA_BROKER_ID: 1
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092,PLAINTEXT_HOST://localhost:29092
-      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "false"
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
     healthcheck:
       test: ["CMD", "kafka-broker-api-versions", "--bootstrap-server", "kafka:9092"]
@@ -45,7 +44,7 @@ services:
       - kafka-net
 
   flask-app:
- #   image: alollosh/mycv:latest
+  #  image: alollosh/mycv:v4
     container_name: flask-app
     build: .
     ports:
@@ -82,13 +81,16 @@ services:
     - /var/lib/docker/:/var/lib/docker:ro
     networks:
       - kafka-net
+      
   jenkins:
     image: jenkins/jenkins:lts
     container_name: jenkins
+    privileged: true  # Allows Docker to run inside the container
     ports:
       - 8082:8080
       - 50000:50000
     volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
       - ./jenkins:/var/jenkins_home
     networks:
       - kafka-net

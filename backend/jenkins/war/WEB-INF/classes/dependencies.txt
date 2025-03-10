@@ -1,8 +1,8 @@
 
 The following files have been resolved:
-   org.jenkins-ci.main:cli:jar:2.492.1:compile -- module cli (auto)
+   org.jenkins-ci.main:cli:jar:2.492.2:compile -- module cli (auto)
    org.jenkins-ci.main:remoting:jar:3283.v92c105e0f819:compile -- module remoting (auto)
-   org.jenkins-ci.main:jenkins-core:jar:2.492.1:compile -- module jenkins.core (auto)
+   org.jenkins-ci.main:jenkins-core:jar:2.492.2:compile -- module jenkins.core (auto)
    args4j:args4j:jar:2.37:compile -- module args4j [auto]
    com.github.spotbugs:spotbugs-annotations:jar:4.8.6:compile -- module com.github.spotbugs.annotations [auto]
    com.google.guava:guava:jar:33.4.0-jre:compile -- module com.google.common [auto]
@@ -49,7 +49,7 @@ The following files have been resolved:
    org.jenkins-ci:symbol-annotation:jar:1.25:compile -- module symbol.annotation (auto)
    org.jenkins-ci:task-reactor:jar:1.9:compile -- module task.reactor (auto)
    org.jenkins-ci:version-number:jar:1.12:compile -- module version.number (auto)
-   org.jenkins-ci.main:websocket-spi:jar:2.492.1:compile -- module websocket.spi (auto)
+   org.jenkins-ci.main:websocket-spi:jar:2.492.2:compile -- module websocket.spi (auto)
    org.jfree:jfreechart:jar:1.0.19:compile -- module jfreechart (auto)
    org.jfree:jcommon:jar:1.0.23:compile -- module jcommon (auto)
    org.jvnet.hudson:commons-jelly-tags-define:jar:1.1-jenkins-20241115:compile -- module commons.jelly.tags.define (auto)
@@ -85,7 +85,7 @@ The following files have been resolved:
    org.springframework:spring-expression:jar:6.2.1:compile -- module spring.expression [auto]
    org.springframework:spring-web:jar:6.2.1:compile -- module spring.web [auto]
    xpp3:xpp3:jar:1.1.4c:compile -- module xpp3 (auto)
-   org.jenkins-ci.main:websocket-jetty12-ee9:jar:2.492.1:compile -- module websocket.jetty12.ee9 (auto)
+   org.jenkins-ci.main:websocket-jetty12-ee9:jar:2.492.2:compile -- module websocket.jetty12.ee9 (auto)
    org.slf4j:slf4j-jdk14:jar:2.0.16:compile -- module org.slf4j.jul
    org.slf4j:slf4j-api:jar:2.0.16:compile -- module org.slf4j
    org.jenkins-ci:winstone:jar:8.4:test -- module winstone (auto)
