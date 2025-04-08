@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   zookeeper:
-    image: 779846784494.dkr.ecr.eu-north-1.amazonaws.com/zookeeper:v1
+    image: confluentinc/cp-zookeeper:7.3.2
     container_name: zookeeper
     ports:
       - "2181:2181"
@@ -13,7 +13,7 @@ services:
       - kafka-net
 
   kafka:
-    image: 779846784494.dkr.ecr.eu-north-1.amazonaws.com/kafkabroker:v1
+    image: confluentinc/cp-kafka:7.3.2
     container_name: kafka
     depends_on:
       - zookeeper
@@ -35,7 +35,7 @@ services:
       - kafka-net
 
   kafka-topics:
-    image: 779846784494.dkr.ecr.eu-north-1.amazonaws.com/kafkabroker:v1
+    image: confluentinc/cp-kafka:7.3.2
     depends_on:
       kafka:
         condition: service_healthy
@@ -44,7 +44,7 @@ services:
       - kafka-net
 
   flask-app:
-    image: 779846784494.dkr.ecr.eu-north-1.amazonaws.com/mycv:latest
+    image: alollosh/mycv:v5
     container_name: flask-app
    #build: .
     ports:
@@ -59,7 +59,7 @@ services:
     networks:
       - kafka-net
   prometheus:
-    image: 779846784494.dkr.ecr.eu-north-1.amazonaws.com/prometheus:v1
+    image: prom/prometheus
     container_name: prometheus
     ports:
       - "9090:9090"
@@ -70,7 +70,7 @@ services:
       - kafka-net
 
   cadvisor:
-    image: 779846784494.dkr.ecr.eu-north-1.amazonaws.com/cadvisor:v1
+    image: gcr.io/cadvisor/cadvisor:latest
     container_name: cadvisor
     ports:
     - 8080:8080
@@ -83,7 +83,7 @@ services:
       - kafka-net
       
   jenkins:
-    image: 779846784494.dkr.ecr.eu-north-1.amazonaws.com/jenkins:v1
+    image: jenkins/jenkins:lts
     container_name: jenkins
     privileged: true  # Allows Docker to run inside the container
     ports:
