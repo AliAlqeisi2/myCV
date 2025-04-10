@@ -1,0 +1,7 @@
+*.env
+backend/emailsender1/.env/
+backend/jenkins/
+backend/__pycache__/
+aws/
+awscliv2.zip
+backend/jenkins/*
